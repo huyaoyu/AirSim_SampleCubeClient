@@ -6,7 +6,7 @@ I have made a [modified version of AirSim][modified_airsim] so that we could cap
 
 This repo has the sample code for testing the modified AirSim.
 
-Please see my blog on how I implement the modifications.
+Please see [my blog on how I implement the modifications](http://www.huyaoyu.com/technical/2021/04/29/modify-airsim.html).
 
 <img src="readme_figures/rgb.png" alt="rgb" class="inline" width="600" />
 <img src="readme_figures/depth_vis.png" alt="depth" class="inline" width="600" />
