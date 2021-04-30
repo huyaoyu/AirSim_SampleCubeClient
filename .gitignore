@@ -1,4 +1,5 @@
 *.code-workspace
 *.pyc
-*.png
+cube/0*
+cube/cube_render/
 
