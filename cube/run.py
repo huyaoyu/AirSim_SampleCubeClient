@@ -13,6 +13,9 @@ import pprint
 import tempfile
 import time
 
+# Local module.
+from depth_2_distance import (meshgrid_from_img, depth_2_distance)
+
 def scale_float_array(array, maxA=50):
     '''array (NumPy): The float image.
     maxA (float): Upper limit of array for clipping.'''
@@ -23,7 +26,8 @@ def scale_float_array(array, maxA=50):
 pp = pprint.PrettyPrinter(indent=4)
 
 # Pre parthe output directory.
-out_dir = './cube_render'
+out_dir = './oldtown'
+# out_dir = './acienttowns'
 
 if ( not os.path.isdir(out_dir) ):
     os.makedirs(out_dir)
@@ -57,12 +61,20 @@ for x in range(2):
             # Get the raw floating-point data.
             pfm_array = airsim.get_pfm_array(response).reshape((response.height, response.width, 1))
 
+            # Create the meshgrid.
+            xx, yy = meshgrid_from_img(pfm_array)
+
+            # Convert the depth values to distance.
+            dist_array = np.zeros_like(pfm_array)
+            if ( not depth_2_distance(pfm_array, xx, yy, dist_array) ):
+                raise Exception('Failed to conver the depth to distance. ')
+
             # Save the floating-point data as compressed PNG file.
-            img_array = pfm_array.view('<u1')
+            img_array = dist_array.view('<u1')
             cv2.imwrite(os.path.normpath(os.path.join(out_dir, '%03d_%02d.png' % (x, i))), img_array)
 
             # Visualize the depth.
-            scaled = scale_float_array(pfm_array)
+            scaled = scale_float_array(dist_array)
             scaled_grey = (np.clip( scaled, 0, 1 ) * 255).astype(np.uint8)
             cv2.imwrite(os.path.normpath(os.path.join(out_dir, '%03d_%02d_vis.png' % (x, i))), scaled_grey)
         else:
