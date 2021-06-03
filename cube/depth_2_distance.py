@@ -15,7 +15,7 @@ def get_filename_parts(fn):
 
     s1 = os.path.splitext(s0[1])
 
-    return s0[0], *s1
+    return s0[0], s1[0], s1[1]
 
 def read_compressed_float(fn):
     assert( os.path.isfile(fn) ), \

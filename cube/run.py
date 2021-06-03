@@ -26,8 +26,11 @@ def scale_float_array(array, maxA=50):
 pp = pprint.PrettyPrinter(indent=4)
 
 # Pre parthe output directory.
-out_dir = './oldtown'
+# out_dir = './blocks_512'
+# out_dir = './oldtown_512'
 # out_dir = './acienttowns'
+# out_dir = './blocks_512_nearest'
+out_dir = './blocks_1024_nearest'
 
 if ( not os.path.isdir(out_dir) ):
     os.makedirs(out_dir)
@@ -74,7 +77,7 @@ for x in range(2):
             cv2.imwrite(os.path.normpath(os.path.join(out_dir, '%03d_%02d.png' % (x, i))), img_array)
 
             # Visualize the depth.
-            scaled = scale_float_array(dist_array)
+            scaled = scale_float_array(dist_array, maxA=50)
             scaled_grey = (np.clip( scaled, 0, 1 ) * 255).astype(np.uint8)
             cv2.imwrite(os.path.normpath(os.path.join(out_dir, '%03d_%02d_vis.png' % (x, i))), scaled_grey)
         else:
