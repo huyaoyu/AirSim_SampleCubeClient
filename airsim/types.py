@@ -78,6 +78,14 @@ class WeatherParameter:
     Fog = 7
     Enabled = 8
 
+class Vector2r(MsgpackMixin):
+    x_val = 0.0
+    y_val = 0.0
+
+    def __init__(self, x_val = 0.0, y_val = 0.0):
+        self.x_val = x_val
+        self.y_val = y_val
+
 class Vector3r(MsgpackMixin):
     x_val = 0.0
     y_val = 0.0
@@ -138,6 +146,8 @@ class Vector3r(MsgpackMixin):
     def to_numpy_array(self):
         return np.array([self.x_val, self.y_val, self.z_val], dtype=np.float32)
 
+    def __iter__(self):
+        return iter((self.x_val, self.y_val, self.z_val))
 
 class Quaternionr(MsgpackMixin):
     w_val = 0.0
@@ -228,14 +238,16 @@ class Quaternionr(MsgpackMixin):
     def to_numpy_array(self):
         return np.array([self.x_val, self.y_val, self.z_val, self.w_val], dtype=np.float32)
 
+    def __iter__(self):
+        return iter((self.x_val, self.y_val, self.z_val, self.w_val))
 
 class Pose(MsgpackMixin):
     position = Vector3r()
     orientation = Quaternionr()
 
     def __init__(self, position_val = None, orientation_val = None):
-        position_val = position_val if position_val != None else Vector3r()
-        orientation_val = orientation_val if orientation_val != None else Quaternionr()
+        position_val = position_val if position_val is not None else Vector3r()
+        orientation_val = orientation_val if orientation_val is not None else Quaternionr()
         self.position = position_val
         self.orientation = orientation_val
 
@@ -246,6 +258,8 @@ class Pose(MsgpackMixin):
     def containsNan(self):
         return (self.position.containsNan() or self.orientation.containsNan())
 
+    def __iter__(self):
+        return iter((self.position, self.orientation))
 
 class CollisionInfo(MsgpackMixin):
     has_collided = False
@@ -449,11 +463,26 @@ class DistanceSensorData(MsgpackMixin):
     max_distance = 0.0
     relative_pose = Pose()
 
+class Box2D(MsgpackMixin):
+    min = Vector2r()
+    max = Vector2r()
+
+class Box3D(MsgpackMixin):
+    min = Vector3r()
+    max = Vector3r()
+
+class DetectionInfo(MsgpackMixin):
+    name = ''
+    geo_point = GeoPoint()
+    box2D = Box2D()
+    box3D = Box3D()
+    relative_pose = Pose()
+    
 class PIDGains():
     """
     Struct to store values of PID gains. Used to transmit controller gain values while instantiating
     AngleLevel/AngleRate/Velocity/PositionControllerGains objects.
-    
+
     Attributes:
         kP (float): Proportional gain
         kI (float): Integrator gain
@@ -470,7 +499,7 @@ class PIDGains():
 class AngleRateControllerGains():
     """
     Struct to contain controller gains used by angle level PID controller
-    
+
     Attributes:
         roll_gains (PIDGains): kP, kI, kD for roll axis
         pitch_gains (PIDGains): kP, kI, kD for pitch axis
@@ -482,14 +511,14 @@ class AngleRateControllerGains():
         self.roll_gains = roll_gains
         self.pitch_gains = pitch_gains
         self.yaw_gains = yaw_gains
-    
+
     def to_lists(self):
         return [self.roll_gains.kp, self.pitch_gains.kp, self.yaw_gains.kp], [self.roll_gains.ki, self.pitch_gains.ki, self.yaw_gains.ki], [self.roll_gains.kd, self.pitch_gains.kd, self.yaw_gains.kd]
 
 class AngleLevelControllerGains():
     """
     Struct to contain controller gains used by angle rate PID controller
-    
+
     Attributes:
         roll_gains (PIDGains): kP, kI, kD for roll axis
         pitch_gains (PIDGains): kP, kI, kD for pitch axis
@@ -501,14 +530,14 @@ class AngleLevelControllerGains():
         self.roll_gains = roll_gains
         self.pitch_gains = pitch_gains
         self.yaw_gains = yaw_gains
-    
+
     def to_lists(self):
         return [self.roll_gains.kp, self.pitch_gains.kp, self.yaw_gains.kp], [self.roll_gains.ki, self.pitch_gains.ki, self.yaw_gains.ki], [self.roll_gains.kd, self.pitch_gains.kd, self.yaw_gains.kd]
 
 class VelocityControllerGains():
     """
     Struct to contain controller gains used by velocity PID controller
-    
+
     Attributes:
         x_gains (PIDGains): kP, kI, kD for X axis
         y_gains (PIDGains): kP, kI, kD for Y axis
@@ -520,14 +549,14 @@ class VelocityControllerGains():
         self.x_gains = x_gains
         self.y_gains = y_gains
         self.z_gains = z_gains
-    
+
     def to_lists(self):
         return [self.x_gains.kp, self.y_gains.kp, self.z_gains.kp], [self.x_gains.ki, self.y_gains.ki, self.z_gains.ki], [self.x_gains.kd, self.y_gains.kd, self.z_gains.kd]
 
 class PositionControllerGains():
     """
     Struct to contain controller gains used by position PID controller
-    
+
     Attributes:
         x_gains (PIDGains): kP, kI, kD for X axis
         y_gains (PIDGains): kP, kI, kD for Y axis
@@ -539,7 +568,7 @@ class PositionControllerGains():
         self.x_gains = x_gains
         self.y_gains = y_gains
         self.z_gains = z_gains
-    
+
     def to_lists(self):
         return [self.x_gains.kp, self.y_gains.kp, self.z_gains.kp], [self.x_gains.ki, self.y_gains.ki, self.z_gains.ki], [self.x_gains.kd, self.y_gains.kd, self.z_gains.kd]
 

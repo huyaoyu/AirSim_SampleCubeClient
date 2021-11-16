@@ -30,7 +30,30 @@ pp = pprint.PrettyPrinter(indent=4)
 # out_dir = './oldtown_512'
 # out_dir = './acienttowns'
 # out_dir = './blocks_512_nearest'
-out_dir = './blocks_1024_nearest'
+# out_dir = './blocks_1024_nearest'
+# out_dir = './acient_town_1024_nearest'
+# out_dir = './american_diner_1024_nearest'
+# out_dir = './antiquity_3d_1024_nearest'
+# out_dir = './castle_fortress_1024_nearest'
+# out_dir = './construction_site_1024_nearest'
+# out_dir = './country_house_1024_nearest'
+# out_dir = './cyber_punk_downtown_1024_nearest'
+# out_dir = './fantasy_1024_nearest'
+# out_dir = './HQ_western_saloon_1024_nearest'
+# out_dir = './industrial_hangar_1024_nearest'
+# out_dir = './modular_neighborhood_1024_nearest'
+# out_dir = './nordic_harbor_1024_nearest'
+# out_dir = './old_brick_house_1024_nearest'
+# out_dir = './old_scandinavia_1024_nearest'
+# out_dir = './old_industrial_city_1024_nearest'
+# out_dir = './polar_scifi_facility_1024_nearest'
+# out_dir = './retro_office_1024_nearest'
+# out_dir = './ruins_1024_nearest'
+# out_dir = './sewerage_1024_nearest'
+# out_dir = './shore_cave_1024_nearest'
+# out_dir = './urban_construction_1024_nearest'
+# out_dir = './victorian_street_1024_nearest'
+out_dir = './20211116_nearest'
 
 if ( not os.path.isdir(out_dir) ):
     os.makedirs(out_dir)
@@ -40,6 +63,7 @@ client = airsim.VehicleClient()
 
 # The request list.
 request = [
+    airsim.ImageRequest('2', airsim.ImageType.Scene, pixels_as_float=False, compress=True),
     airsim.ImageRequest('2', airsim.ImageType.CubeScene, pixels_as_float=False, compress=True),
     airsim.ImageRequest('2', airsim.ImageType.CubeDepth, pixels_as_float=True,  compress=False),
     airsim.ImageRequest('1', airsim.ImageType.CubeScene, pixels_as_float=False, compress=True),
