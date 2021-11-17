@@ -19,7 +19,7 @@ By default, the modified AirSim generates "depth" panorama images. Since "depth"
 
 Use the `Cube` branch of the [modified AirSim][modified_airsim].
 
-The modified AirSim is based on the 1.4.0 version. I have tested it with Unreal Engine 4.26.2. There might be some issues when converting a project that is created by the 4.25 version. 
+The modified AirSim is based on the 1.4.0 (1.6) version. I have tested it with Unreal Engine 4.26.2. There might be some issues when converting a project that is created by the 4.25 version. 
 
 If this happens, let Unreal Engine generate the project files and use Visual Studio Code to compile the Development Editor configuration. If Unreal Engine refuses to generate the project files, I believe the following command is the one to try.
 
