@@ -14,7 +14,8 @@ class VehicleClient:
     def __init__(self, ip = "", port = 41451, timeout_value = 3600):
         if (ip == ""):
             ip = "127.0.0.1"
-        self.client = msgpackrpc.Client(msgpackrpc.Address(ip, port), timeout = timeout_value, pack_encoding = 'utf-8', unpack_encoding = 'utf-8')
+        # self.client = msgpackrpc.Client(msgpackrpc.Address(ip, port), timeout = timeout_value, pack_encoding = 'utf-8', unpack_encoding = 'utf-8')
+        self.client = msgpackrpc.Client(msgpackrpc.Address(ip, port), timeout = timeout_value)
 
     # -----------------------------------  Common vehicle APIs ---------------------------------------------
     def reset(self):
