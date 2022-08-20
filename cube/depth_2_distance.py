@@ -46,6 +46,14 @@ def meshgrid_from_img(img):
 
     return xx, yy
 
+def depth_2_distance_planar(pn_depth, f, c, xx, yy):
+    '''
+    f (float): focal length.
+    c (2-element): principal point.
+    '''
+    d = np.sqrt( ( ( xx - c[0] ) / f )**2 + ( ( yy - c[1] ) / f )**2 + 1 ) * pn_depth
+    return d.astype(np.float32)
+
 @numba.jit(nopython=True)
 def plane_angles(lon, lat):
     '''Compute the angles with respect to the yz and yx planes. '''
